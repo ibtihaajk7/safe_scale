@@ -7,6 +7,7 @@ SafeScale is a production-grade responsive scaling utility for Flutter that prev
   - [Get values](#get-values)
   - [Use in widgets](#use-in-widgets)
   - [The "Safe" Scaling Recipe](#the-safe-scaling-recipe)
+  - [Font sizes on tablets](#font-sizes-on-tablets)
   - [Other Functionalities](#other-functionalities)
 
 ## Usage
@@ -75,6 +76,19 @@ double scale = (width / 390).clamp(
 
 SafeScale().init(context, 844, 390, scale: scale);
 ```
+
+## Font sizes on tablets
+
+`getMyDynamicFontSize` scales text by the screen's height/width ratio relative to the design frame. That works for phones, but tablets are much wider than a phone design frame, so the ratio alone would shrink their text.
+
+On screens whose shortest side is at least `SafeScale.tabletShortestSide` (600 logical pixels), the font size is never smaller than the design size times `scale`. With a 390x844 design frame on an iPad Air 11" (820x1180):
+
+| `scale` | `getMyDynamicFontSize(16)` |
+| ------- | -------------------------- |
+| 1.0     | 16                         |
+| 1.2     | 19.2                       |
+
+To make tablet text larger than the design, pass a `scale` above 1.0 for tablets, e.g. `(width / 390).clamp(1.0, 1.2)` when `width > 600`. Phones are unaffected.
 
 ### Other Functionalities
 
