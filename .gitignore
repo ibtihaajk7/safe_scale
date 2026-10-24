@@ -1,0 +1,36 @@
+# Misc
+.DS_Store
+*.log
+*.swp
+.idea/
+*.iml
+.vscode/
+
+# Dart / Flutter
+.dart_tool/
+.packages
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+/pubspec.lock
+
+# Android
+local.properties
+**/android/.gradle
+**/android/gradlew
+**/android/gradlew.bat
+**/android/gradle/wrapper/gradle-wrapper.jar
+**/android/key.properties
+
+# iOS / macOS
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/ephemeral/
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/Pods/
+**/macos/Flutter/ephemeral/
+**/macos/Pods/
+xcuserdata/
+
+# Windows / Linux
+**/windows/flutter/ephemeral/
+**/linux/flutter/ephemeral/
