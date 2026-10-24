@@ -41,6 +41,10 @@ class SafeScale /* implements ResponsiveScreenMethods  */ {
   static late double _fontRatio;
   static double _scale = 1.0;
 
+  /// Shortest screen side, in logical pixels, from which a screen is treated
+  /// as a tablet. Matches the usual Material breakpoint.
+  static const double tabletShortestSide = 600;
+
   // assert in documentation on pub.dev to call this in main to give root context and then move forward.
 
   /// `init` uses `context`, `height` and `width` to calculate responsive values.
@@ -68,6 +72,13 @@ class SafeScale /* implements ResponsiveScreenMethods  */ {
 
     screenWidth = _mediaQueryData.size.width;
     _myBaseFont = (screenHeight + AppBar().preferredSize.height) / screenWidth;
+    // Tablets are wider than the (phone) design frame, so the aspect ratio
+    // alone would shrink their text below the design size. Floor it there and
+    // leave any extra growth to `scale`.
+    if (_mediaQueryData.size.shortestSide >= tabletShortestSide &&
+        _myBaseFont < _fontRatio) {
+      _myBaseFont = _fontRatio;
+    }
 
     horizontalBlock = (screenWidth - _safeAreaHorizontal) / 100;
     verticalBlock = (screenHeight + AppBar().preferredSize.height) / 100;
@@ -84,6 +95,11 @@ class SafeScale /* implements ResponsiveScreenMethods  */ {
   /// `fontSizeInDesignFile` which is the font factor according to the device designer in `Design` files
   ///
   /// `maxlimit` is the maximum size of font that the it will be limited to
+  ///
+  /// On phones the size follows the screen's height/width ratio relative to
+  /// the design frame. On tablets (shortest side of at least
+  /// [tabletShortestSide]) it is never smaller than the design size times
+  /// `scale`.
   static double getMyDynamicFontSize(double fontSizeInDesignFile,
       {double? maxlimit}) {
     // _fontRatio is the ratio of height to width of the frame
